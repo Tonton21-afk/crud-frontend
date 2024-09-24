@@ -44,19 +44,20 @@ class Services {
     }
   }
 
-  // Update a student
   Future<void> updateStudent(String id, Student student) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/students/$id'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(student.toJson()),
-    );
+  final response = await http.put(
+    Uri.parse('$baseUrl/students/$id'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(student.toJson()),
+  );
 
-    if (response.statusCode != 200) {
-      throw Exception(
-          'Failed to update student, status code: ${response.statusCode}');
-    }
+  print('Response from updateStudent: ${response.statusCode}, ${response.body}');
+
+  if (response.statusCode != 200) {
+    throw Exception(
+      'Failed to update student, status code: ${response.statusCode}');
   }
+}
 
   // Delete a student
 Future<void> deleteStudent(String id) async {
