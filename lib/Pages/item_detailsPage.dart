@@ -192,27 +192,24 @@ class ItemDetailspage extends StatelessWidget {
   }
 
   // update API
-  void _updateStudent(String id, String firstName, String lastName, String course,
-  String year, bool enrolled, BuildContext context) async {
-  try {
-    Student updatedStudent = Student(
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      course: course,
-      year: year,
-      enrolled: enrolled,
-    );
+  void _updateStudent(String id, String firstName, String lastName,
+      String course, String year, bool enrolled, BuildContext context) async {
+    try {
+      Student updatedStudent = Student(
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        course: course,
+        year: year,
+        enrolled: enrolled,
+      );
 
-    await Services().updateStudent(id, updatedStudent);
-    Navigator.pop(context, true); 
-
-  } catch (error) {
-   
-    print('Error updating student: $error'); 
-    
+      await Services().updateStudent(id, updatedStudent);
+      Navigator.pop(context, true);
+    } catch (error) {
+      print('Error updating student: $error');
+    }
   }
-}
 
 // delete API
   void _deleteStudent(String id, BuildContext context) async {

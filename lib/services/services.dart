@@ -55,7 +55,8 @@ class Services {
         'Response from updateStudent: ${response.statusCode}, ${response.body}');
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to update note');
+      throw Exception(
+          'Failed to update student: ${response.statusCode}, ${response.body}');
     }
   }
 
