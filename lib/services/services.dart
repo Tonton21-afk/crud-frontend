@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:activity_crud/model/student.dart';
 
 class Services {
-  final String baseUrl = 'http://crud-backend-lovat.vercel.app';
+  final String baseUrl = 'https://crud-backend-lovat.vercel.app';
 
   // Fetch all students
   Future<List<Student>> fetchStudents() async {
@@ -59,19 +59,20 @@ class Services {
   }
 
   // Delete a student
-  Future<void> deleteStudent(String id) async {
-    try {
-      final response = await http.delete(Uri.parse('$baseUrl/students/$id'));
+Future<void> deleteStudent(String id) async {
+  try {
+    final response = await http.delete(Uri.parse('$baseUrl/students/$id'));
 
-      if (response.statusCode != 200 && response.statusCode != 204) {
-        // Change the condition to check for 204 No Content status
-        throw Exception(
-            'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
-      }
-    } catch (e) {
-      // Log or print the error
-      print('Error deleting student: $e');
-      throw Exception('Error deleting student: $e');
+    if (response.statusCode != 200 && response.statusCode != 204) {
+      // Change the condition to check for 204 No Content status
+      throw Exception(
+          'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
     }
+  } catch (e) {
+    // Log or print the error
+    print('Error deleting student: $e');
+    throw Exception('Error deleting student: $e');
   }
+}
+
 }
