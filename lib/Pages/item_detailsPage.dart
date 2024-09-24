@@ -193,37 +193,26 @@ class ItemDetailspage extends StatelessWidget {
 
   // update API
   void _editStudent(String id, String firstName, String lastName, String course,
-      String year, bool enrolled, BuildContext context) async {
-    try {
-      Student updatedStudent = Student(
-        id: id,
-        firstName: firstName,
-        lastName: lastName,
-        course: course,
-        year: year,
-        enrolled: enrolled,
-      );
+  String year, bool enrolled, BuildContext context) async {
+  try {
+    Student updatedStudent = Student(
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      course: course,
+      year: year,
+      enrolled: enrolled,
+    );
 
-      await Services().updateStudent(id, updatedStudent);
-      Navigator.pop(context, true);
+    await Services().updateStudent(id, updatedStudent);
+    Navigator.pop(context, true); 
 
-      // Show success message directly
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Student updated successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } catch (error) {
-      // Show error message directly
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error updating student: $error'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+  } catch (error) {
+   
+    print('Error updating student: $error'); 
+    
   }
+}
 
 // delete API
   void _deleteStudent(String id, BuildContext context) async {
