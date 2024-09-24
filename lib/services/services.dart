@@ -45,35 +45,34 @@ class Services {
   }
 
   Future<void> updateStudent(String id, Student student) async {
-  final response = await http.put(
-    Uri.parse('$baseUrl/students/$id'),
-    headers: {'Content-Type': 'application/json'},
-    body: json.encode(student.toJson()),
-  );
+    final response = await http.put(
+      Uri.parse('$baseUrl/students/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(student.toJson()),
+    );
 
-  print('Response from updateStudent: ${response.statusCode}, ${response.body}');
+    print(
+        'Response from updateStudent: ${response.statusCode}, ${response.body}');
 
-  if (response.statusCode != 200) {
-    throw Exception(
-      'Failed to update student, status code: ${response.statusCode}');
+    if (response.statusCode != 200) {
+      throw Exception('Failed to update note');
+    }
   }
-}
 
   // Delete a student
-Future<void> deleteStudent(String id) async {
-  try {
-    final response = await http.delete(Uri.parse('$baseUrl/students/$id'));
+  Future<void> deleteStudent(String id) async {
+    try {
+      final response = await http.delete(Uri.parse('$baseUrl/students/$id'));
 
-    if (response.statusCode != 200 && response.statusCode != 204) {
-      // Change the condition to check for 204 No Content status
-      throw Exception(
-          'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
+      if (response.statusCode != 200 && response.statusCode != 204) {
+        // Change the condition to check for 204 No Content status
+        throw Exception(
+            'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
+      }
+    } catch (e) {
+      // Log or print the error
+      print('Error deleting student: $e');
+      throw Exception('Error deleting student: $e');
     }
-  } catch (e) {
-    // Log or print the error
-    print('Error deleting student: $e');
-    throw Exception('Error deleting student: $e');
   }
-}
-
 }

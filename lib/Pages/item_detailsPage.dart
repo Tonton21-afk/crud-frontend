@@ -170,7 +170,7 @@ class ItemDetailspage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    _editStudent(
+                    _updateStudent(
                       student.id,
                       firstNameController.text,
                       lastNameController.text,
@@ -192,7 +192,7 @@ class ItemDetailspage extends StatelessWidget {
   }
 
   // update API
-  void _editStudent(String id, String firstName, String lastName, String course,
+  void _updateStudent(String id, String firstName, String lastName, String course,
   String year, bool enrolled, BuildContext context) async {
   try {
     Student updatedStudent = Student(
