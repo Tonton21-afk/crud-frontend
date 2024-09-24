@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:activity_crud/model/student.dart';
@@ -203,8 +205,9 @@ class ItemDetailspage extends StatelessWidget {
       );
 
       await Services().updateStudent(id, updatedStudent);
-
       Navigator.pop(context, true);
+
+      // Show success message directly
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Student updated successfully!'),
@@ -212,6 +215,7 @@ class ItemDetailspage extends StatelessWidget {
         ),
       );
     } catch (error) {
+      // Show error message directly
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error updating student: $error'),
@@ -221,13 +225,13 @@ class ItemDetailspage extends StatelessWidget {
     }
   }
 
-  // delete API
+// delete API
   void _deleteStudent(String id, BuildContext context) async {
     try {
       await Services().deleteStudent(id);
-
       Navigator.pop(context, true);
 
+      // Show success message directly
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Student deleted successfully!'),
@@ -235,6 +239,7 @@ class ItemDetailspage extends StatelessWidget {
         ),
       );
     } catch (error) {
+      // Show error message directly
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error deleting student: $error'),
