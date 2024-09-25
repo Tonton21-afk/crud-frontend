@@ -31,8 +31,7 @@ class _ListviewpageState extends State<Listviewpage> {
     try {
       List<Student> fetchedStudents = await _studentService.fetchStudents();
       setState(() {
-        students =
-            fetchedStudents;
+        students = fetchedStudents;
       });
     } catch (e) {
       print('Error fetching students: $e');
@@ -66,7 +65,8 @@ class _ListviewpageState extends State<Listviewpage> {
                           );
 
                           if (result == true) {
-                            _fetchStudents();
+                            await _fetchStudents();
+                            setState(() {});
                           }
                         },
                       ),
