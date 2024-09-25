@@ -44,19 +44,24 @@ class Services {
     }
   }
 
+  //update
   Future<void> updateStudent(String id, Student student) async {
     final response = await http.put(
       Uri.parse('$baseUrl/students/$id'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(student.toJson()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(student.toJson()),
     );
 
-    print(
-        'Response from updateStudent: ${response.statusCode}, ${response.body}');
-
-    if (response.statusCode != 200) {
-      throw Exception(
-          'Failed to update student: ${response.statusCode}, ${response.body}');
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body);
+      if (responseBody['student'] != null) {
+      } else {
+        throw Exception('Unexpected response format');
+      }
+    } else {
+      throw Exception('Failed to update student: ${response.body}');
     }
   }
 

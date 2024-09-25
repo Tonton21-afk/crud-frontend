@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:activity_crud/model/student.dart';
@@ -7,9 +5,7 @@ import 'package:activity_crud/services/services.dart';
 
 class ItemDetailspage extends StatelessWidget {
   final Student student;
-
   const ItemDetailspage({super.key, required this.student});
-
   static const routeName = '/sample_item';
 
   @override
@@ -27,7 +23,6 @@ class ItemDetailspage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
-              // Call delete function without confirmation
               _deleteStudent(student.id, context);
             },
           ),
@@ -38,34 +33,19 @@ class ItemDetailspage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'First Name: ${student.firstName}',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            Text('First Name: ${student.firstName}',
+                style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
-            Text(
-              'Last Name:  ${student.lastName}',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            Text('Last Name: ${student.lastName}',
+                style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
-            Text(
-              'Course: ${student.course}',
-              style: const TextStyle(fontSize: 16),
-            ),
+            Text('Course: ${student.course}',
+                style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
-            Text(
-              'Year: ${student.year}',
-              style: const TextStyle(fontSize: 16),
-            ),
+            Text('Year: ${student.year}', style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 10),
-            Text(
-              'Enrolled: ${student.enrolled ? "Yes" : "No"}',
-              style: const TextStyle(fontSize: 16),
-            ),
+            Text('Enrolled: ${student.enrolled ? "Yes" : "No"}',
+                style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),
@@ -80,16 +60,7 @@ class ItemDetailspage extends StatelessWidget {
         TextEditingController(text: student.lastName);
     TextEditingController courseController =
         TextEditingController(text: student.course);
-
-    String dropdownValue = [
-      "First Year",
-      "Second Year",
-      "Third Year",
-      "Fourth Year"
-    ].contains(student.year)
-        ? student.year
-        : "First Year";
-
+    String dropdownValue = student.year;
     bool enrolledValue = student.enrolled;
 
     showDialog(
@@ -98,42 +69,36 @@ class ItemDetailspage extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('Edit Student'),
+              title: const Text('Edit Student'),
               content: SingleChildScrollView(
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: firstNameController,
-                      decoration: InputDecoration(labelText: 'First Name'),
+                      decoration:
+                          const InputDecoration(labelText: 'First Name'),
                     ),
                     TextField(
                       controller: lastNameController,
-                      decoration: InputDecoration(labelText: 'Last Name'),
+                      decoration: const InputDecoration(labelText: 'Last Name'),
                     ),
                     TextField(
                       controller: courseController,
-                      decoration: InputDecoration(labelText: 'Course'),
+                      decoration: const InputDecoration(labelText: 'Course'),
                     ),
                     Gap(20),
                     DropdownButtonFormField<String>(
                       value: dropdownValue,
                       items: const [
                         DropdownMenuItem<String>(
-                          value: "First Year",
-                          child: Text("First Year"),
-                        ),
+                            value: "First Year", child: Text("First Year")),
                         DropdownMenuItem<String>(
-                          value: "Second Year",
-                          child: Text("Second Year"),
-                        ),
+                            value: "Second Year", child: Text("Second Year")),
                         DropdownMenuItem<String>(
-                          value: "Third Year",
-                          child: Text("Third Year"),
-                        ),
+                            value: "Third Year", child: Text("Third Year")),
                         DropdownMenuItem<String>(
-                          value: "Fourth Year",
-                          child: Text("Fourth Year"),
-                        ),
+                            value: "Fourth Year", child: Text("Fourth Year")),
                       ],
                       onChanged: (String? newValue) {
                         if (newValue != null) {
@@ -169,8 +134,8 @@ class ItemDetailspage extends StatelessWidget {
                   child: const Text('Cancel'),
                 ),
                 TextButton(
-                  onPressed: () {
-                    _updateStudent(
+                  onPressed: () async {
+                    await _updateStudent(
                       student.id,
                       firstNameController.text,
                       lastNameController.text,
@@ -179,6 +144,7 @@ class ItemDetailspage extends StatelessWidget {
                       enrolledValue,
                       context,
                     );
+
                     Navigator.pop(context, true);
                   },
                   child: const Text('Save'),
@@ -191,8 +157,8 @@ class ItemDetailspage extends StatelessWidget {
     );
   }
 
-  // update API
-  void _updateStudent(String id, String firstName, String lastName,
+  // Update API
+  Future<void> _updateStudent(String id, String firstName, String lastName,
       String course, String year, bool enrolled, BuildContext context) async {
     try {
       Student updatedStudent = Student(
@@ -203,34 +169,37 @@ class ItemDetailspage extends StatelessWidget {
         year: year,
         enrolled: enrolled,
       );
-
       await Services().updateStudent(id, updatedStudent);
-      Navigator.pop(context, true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Student updated successfully!'),
+            backgroundColor: Colors.green),
+      );
     } catch (error) {
-      print('Error updating student: $error');
+      debugPrint('Error updating student: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text('Error updating student: $error'),
+            backgroundColor: Colors.red),
+      );
     }
   }
 
-// delete API
-  void _deleteStudent(String id, BuildContext context) async {
+  // Delete API
+  Future<void> _deleteStudent(String id, BuildContext context) async {
     try {
       await Services().deleteStudent(id);
-      Navigator.pop(context, true);
-
-      // Show success message directly
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Student deleted successfully!'),
-          backgroundColor: Colors.green,
-        ),
+            content: Text('Student deleted successfully!'),
+            backgroundColor: Colors.green),
       );
+      Navigator.pop(context, true);
     } catch (error) {
-      // Show error message directly
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error deleting student: $error'),
-          backgroundColor: Colors.red,
-        ),
+            content: Text('Error deleting student: $error'),
+            backgroundColor: Colors.red),
       );
     }
   }
