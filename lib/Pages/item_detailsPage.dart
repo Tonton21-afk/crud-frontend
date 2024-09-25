@@ -158,6 +158,7 @@ class ItemDetailspage extends StatelessWidget {
   }
 
   // Update API
+  // Update API
   Future<void> _updateStudent(String id, String firstName, String lastName,
       String course, String year, bool enrolled, BuildContext context) async {
     try {
@@ -175,6 +176,9 @@ class ItemDetailspage extends StatelessWidget {
             content: Text('Student updated successfully!'),
             backgroundColor: Colors.green),
       );
+
+      // Indicate that an update occurred
+      Navigator.pop(context, true); // Pass 'true' to indicate update
     } catch (error) {
       debugPrint('Error updating student: $error');
       ScaffoldMessenger.of(context).showSnackBar(

@@ -76,7 +76,6 @@ class Services {
             'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
       }
     } catch (e) {
-
       print('Error deleting student: $e');
       throw Exception('Error deleting student: $e');
     }

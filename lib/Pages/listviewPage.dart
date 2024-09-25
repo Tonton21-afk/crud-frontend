@@ -26,7 +26,6 @@ class _ListviewpageState extends State<Listviewpage> {
     _fetchStudents();
   }
 
-  // Fetch students from the API
   Future<void> _fetchStudents() async {
     try {
       List<Student> fetchedStudents = await _studentService.fetchStudents();
@@ -51,7 +50,7 @@ class _ListviewpageState extends State<Listviewpage> {
               itemCount: students.length,
               itemBuilder: (BuildContext context, int index) {
                 final student = students[index];
-                return (Column(
+                return Column(
                   children: [
                     Card(
                       child: ListTile(
@@ -65,15 +64,15 @@ class _ListviewpageState extends State<Listviewpage> {
                           );
 
                           if (result == true) {
-                            await _fetchStudents();
-                            setState(() {});
+                            _fetchStudents();
+                            // setState(() {});
                           }
                         },
                       ),
                     ),
                     SizedBox(height: 1.0),
                   ],
-                ));
+                );
               },
             ),
           ),
@@ -93,131 +92,130 @@ class _ListviewpageState extends State<Listviewpage> {
     bool localIsEnrolled = false;
 
     showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  const Text(
-                    'Add Student',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Gap(20),
-                  TextField(
-                    controller: firstName,
-                    decoration: const InputDecoration(
-                      label: Text('First Name'),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        context: context,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const Text(
+                      'Add Student',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Gap(20),
+                    TextField(
+                      controller: firstName,
+                      decoration: const InputDecoration(
+                        label: Text('First Name'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(10),
-                  TextField(
-                    controller: lastName,
-                    decoration: const InputDecoration(
-                      label: Text('Last Name'),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    Gap(10),
+                    TextField(
+                      controller: lastName,
+                      decoration: const InputDecoration(
+                        label: Text('Last Name'),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(10),
-                  TextField(
-                    controller: course,
-                    decoration: const InputDecoration(
-                      label: Text("Course"),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    Gap(10),
+                    TextField(
+                      controller: course,
+                      decoration: const InputDecoration(
+                        label: Text("Course"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(20),
-                  DropdownButtonFormField<String>(
-                    value: dropdownValue,
-                    items: const [
-                      DropdownMenuItem<String>(
-                        value: "First Year",
-                        child: Text("First Year"),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "Second Year",
-                        child: Text("Second Year"),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "Third Year",
-                        child: Text("Third Year"),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "Fourth Year",
-                        child: Text("Fourth Year"),
-                      ),
-                    ],
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownValue = newValue!;
-                      });
-                    },
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    Gap(20),
+                    DropdownButtonFormField<String>(
+                      value: dropdownValue,
+                      items: const [
+                        DropdownMenuItem<String>(
+                          value: "First Year",
+                          child: Text("First Year"),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: "Second Year",
+                          child: Text("Second Year"),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: "Third Year",
+                          child: Text("Third Year"),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: "Fourth Year",
+                          child: Text("Fourth Year"),
+                        ),
+                      ],
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValue = newValue!;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
                       ),
                     ),
-                  ),
-                  Gap(20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Enrolled'),
-                      Switch(
-                        value: localIsEnrolled,
-                        onChanged: (bool newValue) {
-                          setState(() {
-                            localIsEnrolled = newValue;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          _resetFields();
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Close'),
-                      ),
-                      const Gap(20),
-                      TextButton(
-                        onPressed: () async {
-                          await _addStudent(
-                            firstName.text,
-                            lastName.text,
-                            course.text,
-                            dropdownValue,
-                            localIsEnrolled,
-                          );
-                          _resetFields();
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Submit'),
-                      ),
-                    ],
-                  ),
-                ],
+                    Gap(20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Enrolled'),
+                        Switch(
+                          value: localIsEnrolled,
+                          onChanged: (bool newValue) {
+                            setState(() {
+                              localIsEnrolled = newValue;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            _resetFields();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Close'),
+                        ),
+                        const Gap(20),
+                        TextButton(
+                          onPressed: () async {
+                            await _addStudent(
+                              firstName.text,
+                              lastName.text,
+                              course.text,
+                              dropdownValue,
+                              localIsEnrolled,
+                            );
+                            _resetFields();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Submit'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          });
         });
-      },
-    );
   }
 
   void _resetFields() {
