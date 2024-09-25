@@ -71,7 +71,7 @@ class Services {
       final response = await http.delete(Uri.parse('$baseUrl/students/$id'));
 
       if (response.statusCode != 200 && response.statusCode != 204) {
-        // Change the condition to check for 204 No Content status
+        
         throw Exception(
             'Failed to delete student, status code: ${response.statusCode}, response: ${response.body}');
       }
